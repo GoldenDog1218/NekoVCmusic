@@ -15,6 +15,7 @@ function music()
 	monitor.setCursorPos(4, 2)
 	monitor.write(musicName)
 	if musicName == "exit" then
+		monitor.clear()
 		exit()
 	end
 	local fullname = musicName .. [[.dfpwm]]
@@ -33,6 +34,7 @@ function needexit()
 	if exie == "exit" then
 		local exie = fyou
 		print("quiting....")
+		monitor.clear()
 		exit()
 	end
 	if exie == "change" or exie == "stop" then
