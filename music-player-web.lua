@@ -11,18 +11,10 @@ function file_exists(path)
 	return file ~=nil
 end
 function downloadFile(url, path)
-    -- 获取文件内容
     local response = http.get(url)
-    
-    -- 如果获取成功
     if response then
-        -- 创建文件
         local file = fs.open(path, "w")
-        
-        -- 写入文件内容
         file.write(response.readAll())
-        
-        -- 关闭文件
         file.close()
         
         print("finish:" .. path)
