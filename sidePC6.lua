@@ -7,12 +7,11 @@ local modem = peripheral.find("modem")
 modem.open(114)
 modem.open(514)
 while true do
-	modem.transmit(514, 114, "online") -- 向指定频道发送消息
-
+	
 	local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 		-- 等待接收回复消息
-
 	if message == online then
+		modem.transmit(514, 114, "online") -- 向指定频道发送消息
 		break -- 收到期望的回复，跳出循环
 	else
 		print("not this one " .. message)
