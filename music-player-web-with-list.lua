@@ -25,9 +25,13 @@ function getFilesWithExtension(folderPath, extension)
     return fileList
 end
 function listmusic()
-	getFilesWithExtension("./disk/", ".dfpwm")
-	for i, fileList in ipairs(list) do
+	local fileList = getFilesWithExtension("./disk/", ".dfpwm")
+	setCursorPos(1, 0)
+	monitor.write("music list")
+	for i, fileList in ipairs(fileList) do
 	  print(i .. "." .. fileList)
+	  monitor.write(i .. "." .. fileList)
+	  setCursorPos(1+i, 0)
 	end
 end
 function file_exists(path)
@@ -62,7 +66,7 @@ function music()
 	monitor.setCursorPos(29, 5)
 	monitor.clearLine()
 	listmusic()
-	musiclistnum = listmusic[musicname]
+	musiclistnum = listmusic .. [musicname]
 	monitor.write(musiclistnum)
 	if musicName == "exit" then
 		monitor.clear()
