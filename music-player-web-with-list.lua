@@ -26,8 +26,9 @@ function getFilesWithExtension(folderPath, extension)
     return fileList
 end
 function listmusic()
+	local monitor = peripheral.find("monitor")
 	local fileList = getFilesWithExtension("./disk/", ".dfpwm")
-	setCursorPos(1, 0)
+	monitor.setCursorPos(1, 0)
 	monitor.write("music list")
 	for i, fileList in ipairs(fileList) do
 	  print(i .. "." .. fileList)
@@ -66,9 +67,16 @@ function music()
 	local musicName = io.read()
 	monitor.setCursorPos(29, 5)
 	monitor.clearLine()
-	listmusic()
+	local fileList = getFilesWithExtension("./disk/", ".dfpwm")
+	monitor.setCursorPos(1, 0)
+	monitor.write("music list")
+	for i, fileList in ipairs(fileList) do
+	  print(i .. "." .. fileList)
+	  monitor.write(i .. "." .. fileList)
+	  monitor.setCursorPos(1+i, 0)
+	end
 	local musicList = getFilesWithExtension("./disk/", ".dfpwm")
-	musiclistnum = musicList[musicname]
+	local musiclistnum = musicList[musicname]
 	monitor.write(musiclistnum)
 	if musicName == "exit" then
 		monitor.clear()
@@ -79,9 +87,9 @@ function music()
 		monitor.clear()
 		listmusic()
 		monitor.setTextScale(1)
-		monitor.setCursorPos(39, 4)
+		monitor.setCursorPos(29, 4)
 		monitor.write("Now Playing...")
-		monitor.setCursorPos(39, 5)
+		monitor.setCursorPos(29, 5)
 		monitor.write("Nothing")
 		music()
 	end
