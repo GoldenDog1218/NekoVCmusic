@@ -2,16 +2,30 @@ local dfpwm = require("cc.audio.dfpwm")
 local speaker = peripheral.find("speaker")
 local decoder = dfpwm.make_decoder()
 local exie = fyou
-function getFolderFileList(folderPath)
+function getFilesWithExtension(folderPath, extension)
     local fileList = {}
-    local folder = io.popen("dir /b \""..folderPath.."\"")
-    for fileName in folder:lines() do
-        table.insert(fileList, fileName)
+    
+    -- 获取文件夹下所有文件和文件夹
+    local files = fs.list(folderPath)
+    
+    -- 遍历每个文件或文件夹
+    for _, file in ipairs(files) do
+        -- 检查是否为文件
+        if fs.isDir(file) == false then
+            local fileName = fs.getName(file)
+            
+            -- 检查文件名是否以指定扩展名结尾
+            if string.sub(fileName, -string.len(extension)) == extension then
+                -- 将符合条件的文件名添加到列表中
+                table.insert(fileList, fileName)
+            end
+        end
     end
-    folder:close()
+    
     return fileList
 end
 function listmusic()
+	getFilesWithExtension("./disk/", ".dfpwm")
 	for i, fileList in ipairs(list) do
 	  print(i .. "." .. fileList)
 	end
@@ -38,14 +52,14 @@ end
 function music()
 	local monitor = peripheral.find("monitor")
 	monitor.setTextScale(1)
-	monitor.setCursorPos(39, 4)
+	monitor.setCursorPos(29, 4)
 	monitor.write("Now Playing...")
-	monitor.setCursorPos(39, 5)
+	monitor.setCursorPos(29, 5)
 	monitor.write("Nothing")
 	print("input music name or exit:")
 	print("you can input list to show music name")
 	local musicName = io.read()
-	monitor.setCursorPos(39, 5)
+	monitor.setCursorPos(29, 5)
 	monitor.clearLine()
 	listmusic()
 	musiclistnum = listmusic[musicname]
