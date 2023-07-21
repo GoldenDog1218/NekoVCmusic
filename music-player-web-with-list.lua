@@ -73,7 +73,8 @@ function music()
 	for i, fileList in ipairs(fileList) do
 	  print(i .. "." .. fileList)
 	  monitor.write(i .. "." .. fileList)
-	  monitor.setCursorPos(1+i, 0)
+	  local xpos = i+1
+	  monitor.setCursorPos(xpos, 0)
 	end
 	local musicList = getFilesWithExtension("./disk/", ".dfpwm")
 	local musiclistnum = musicList[musicname]
@@ -85,7 +86,20 @@ function music()
 	end
 	if musicName == "list" then
 		monitor.clear()
-		listmusic()
+		for i, fileList in ipairs(fileList) do
+		  print(i .. "." .. fileList)
+		  monitor.write(i .. "." .. fileList)
+		  local xpos = i+1
+		  monitor.setCursorPos(xpos, 0)
+		end
+		local musicList = getFilesWithExtension("./disk/", ".dfpwm")
+		local musiclistnum = musicList[musicname]
+		monitor.write(musiclistnum)
+		if musicName == "exit" then
+			monitor.clear()
+			speaker.stop()
+			exit()
+		end
 		monitor.setTextScale(1)
 		monitor.setCursorPos(29, 4)
 		monitor.write("Now Playing...")
