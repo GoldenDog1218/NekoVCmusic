@@ -5,7 +5,7 @@ local screenWidth, screenHeight = monitor.getSize()
 local modem = peripheral.find("modem")
 modem.open(114)
 modem.open(514)
-function Message.new(go, back, message)
+function send(go, back, message)
 	local expectedReply = "ok" -- 期望的回复内容
 	local message = "change" -- 要发送的消息
 
@@ -49,7 +49,7 @@ while true do
         monitor.clear()
         monitor.setCursorPos(1, 1)
 		monitor.write("Please stand by......")
-		Message.new(114, 514, "ChangeMusic")
+		send(114, 514, "ChangeMusic")
         monitor.write("Now you can change music!")
         sleep(2)
         -- 返回原始界面
@@ -64,7 +64,7 @@ while true do
         monitor.clear()
         monitor.setCursorPos(1, 1)
         monitor.write("Quiting.....")
-		Message.new(114, 514, "ExitPlz")
+		send(114, 514, "ExitPlz")
         sleep(2)
         break  -- 退出程序
     end
