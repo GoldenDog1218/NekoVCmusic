@@ -5,6 +5,7 @@ local monitor = peripheral.wrap("left")
 local monitor2 = peripheral.wrap("top")
 local modem = peripheral.find("modem")
 local breakout = false
+local p = 1
 modem.open(114)
 modem.open(514)
 local decoder = dfpwm.make_decoder()
@@ -106,7 +107,7 @@ function MusicPlayer:playMusic(musicIndex)
         --modem.open(123)
         --modem.open(456)
         --modem.transmit(123, 456, musicName)  -- 修改频道和目标ID
-
+	while p~=2 or breakout == exit then
         for chunk in io.lines(filePath, 16 * 1024) do
 	        if breakout == "exit" then
 			break
@@ -122,7 +123,6 @@ function MusicPlayer:playMusic(musicIndex)
 				monitor2.setCursorPos(1, 1)
 				monitor2.clearLine()
 				monitor2.write("Nothing")
-				break
 			elseif message == "ExitPlz" then
 				modem.transmit(514, 114, "VCCAT")
 				monitor.clear()
@@ -131,7 +131,10 @@ function MusicPlayer:playMusic(musicIndex)
 				exit()
 			end
 		end
+		end
+		local p = 2
         end
+	local p = 1
         monitor2.clearLine(2)
         monitor2.setCursorPos(1, 2)
         monitor2.write("Nothing")
