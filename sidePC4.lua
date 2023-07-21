@@ -2,6 +2,7 @@ local buttonWidth = 2
 local buttonHeight = 1
 local monitor = peripheral.find("monitor")
 local screenWidth, screenHeight = monitor.getSize()
+local midpos = math.floor(screenWidth / 2)
 local modem = peripheral.find("modem")
 modem.open(114)
 modem.open(514)
@@ -30,7 +31,7 @@ end
 local buttonY = math.floor(screenHeight / 2 - buttonHeight / 2)
 local changeButtonX = 2
 local exitButtonX = screenWidth - buttonWidth - 1
-
+monitor.setTextScale(0.7)
 -- 清空屏幕并绘制按钮
 monitor.clear()
 monitor.setCursorPos(changeButtonX, buttonY)
@@ -41,9 +42,8 @@ monitor.write("[Exit]")
 -- 监听触摸事件
 while true do
     local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-    
     -- 判断触摸位置是否在按钮范围内
-    if yPos == buttonY and xPos >= changeButtonX and xPos < changeButtonX + buttonWidth then
+    if xPos < midpos then
         -- Change按钮被点击，执行相应代码
         -- TODO: 在这里添加Change按钮的代码逻辑
         monitor.clear()
@@ -58,7 +58,7 @@ while true do
         monitor.write("[Change]")
         monitor.setCursorPos(exitButtonX, buttonY)
         monitor.write("[Exit]")
-    elseif yPos == buttonY and xPos >= exitButtonX and xPos < exitButtonX + buttonWidth then
+    elseif xPos > midpos then
         -- Exit按钮被点击，执行相应代码
         -- TODO: 在这里添加Exit按钮的代码逻辑
         monitor.clear()
