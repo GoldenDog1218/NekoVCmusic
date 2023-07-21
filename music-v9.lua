@@ -114,21 +114,23 @@ function MusicPlayer:playMusic(musicIndex)
 	    local buffer = decoder(chunk)
 	    while not speaker.playAudio(buffer) do
 	        os.pullEvent("speaker_audio_empty")
-	        local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
-	        if message == "ChangeMusic" then
-	            modem.transmit(514, 114, "VCCAT")
-	            breakout = "exit"  -- 修改全局变量的值
-	            speaker.stop()
-	            monitor2.setCursorPos(1, 1)
-	            monitor2.clearLine()
-	            monitor2.write("Nothing")
-	        elseif message == "ExitPlz" then
-	            modem.transmit(514, 114, "VCCAT")
-	            monitor.clear()
-	            monitor2.clear()
-	            speaker.stop()
-	            exit()
-	        end
+
+		-- 接收到信号后，停止播放音乐并返回初始状态
+		local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
+		if message == "ChangeMusic" then
+		    print("Received signal to change music")
+		    monitor2.setCursorPos(1, 1)
+		    monitor2.clearLine()
+		    monitor2.write("Nothing")
+		    breakout = "exit"  -- 修改全局变量的值
+		    speaker.stop()
+		    break  -- 退出内部循环，回到外部循环
+		elseif message == "ExitPlz" then
+		    monitor.clear()
+		    monitor2.clear()
+		    speaker.stop()
+		    exit()
+		end
 	    end
 	end
         monitor2.clearLine(2)
@@ -170,7 +172,9 @@ function MusicPlayer:start()
 
     monitor.clear()
     speaker.stop()
+    -- 添加返回初始状态的代码
+    breakout = false
 end
---onlinecheck(114, 514,"online")
+
 local player = MusicPlayer.new()
 player:start()
