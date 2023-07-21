@@ -2,6 +2,7 @@ local dfpwm = require("cc.audio.dfpwm")
 local speaker = peripheral.find("speaker")
 local decoder = dfpwm.make_decoder()
 local exie = fyou
+local monitor = peripheral.find("monitor")
 function getFilesWithExtension(folderPath, extension)
     local fileList = {}
     
@@ -31,7 +32,7 @@ function listmusic()
 	for i, fileList in ipairs(fileList) do
 	  print(i .. "." .. fileList)
 	  monitor.write(i .. "." .. fileList)
-	  setCursorPos(1+i, 0)
+	  monitor.setCursorPos(1+i, 0)
 	end
 end
 function file_exists(path)
@@ -60,13 +61,14 @@ function music()
 	monitor.write("Now Playing...")
 	monitor.setCursorPos(29, 5)
 	monitor.write("Nothing")
-	print("input music name or exit:")
-	print("you can input list to show music name")
+	print("input music ID or exit:")
+	print("you can input list to show music name with ID")
 	local musicName = io.read()
 	monitor.setCursorPos(29, 5)
 	monitor.clearLine()
 	listmusic()
-	musiclistnum = listmusic .. [musicname]
+	local musicList = getFilesWithExtension("./disk/", ".dfpwm")
+	musiclistnum = musicList[musicname]
 	monitor.write(musiclistnum)
 	if musicName == "exit" then
 		monitor.clear()
