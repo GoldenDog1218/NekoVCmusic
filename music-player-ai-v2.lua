@@ -5,7 +5,13 @@ local monitor = peripheral.wrap("left")
 local monitor2 = peripheral.wrap("top")
 local modem = peripheral.find("modem")
 local decoder = dfpwm.make_decoder()
-
+monitor2.clearLine(1)
+monitor2.clearLine(2)
+monitor2.setCursorPos(1, 1)
+monitor2.write("Now Playing: ")
+monitor2.clearLine(2)
+monitor2.setCursorPos(2, 1)
+monitor2.write("Nothing")
 local MusicPlayer = {}
 MusicPlayer.__index = MusicPlayer
 
@@ -64,11 +70,16 @@ function MusicPlayer:playMusic(musicIndex)
                 return
             end
         end
-
+        monitor2.clearLine(1)
+        monitor2.clearLine(2)
+        monitor2.setCursorPos(1, 1)
+        monitor2.write("Now Playing: ")
+        monitor2.setCursorPos(2, 1)
+        monitor2.write(musicName)
         -- 添加向另一台计算机发送当前歌曲名的代码
-        modem.open(123)
-        modem.open(456)
-        modem.transmit(123, 456, musicName)  -- 修改频道和目标ID
+        --modem.open(123)
+        --modem.open(456)
+        --modem.transmit(123, 456, musicName)  -- 修改频道和目标ID
 
         for chunk in io.lines(filePath, 16 * 1024) do
             local buffer = decoder(chunk)
@@ -76,6 +87,9 @@ function MusicPlayer:playMusic(musicIndex)
                 os.pullEvent("speaker_audio_empty")
             end
         end
+        monitor2.clearLine(2)
+        monitor2.setCursorPos(2, 1)
+        monitor2.write("Nothing")
     else
         print("Invalid music index")
     end
