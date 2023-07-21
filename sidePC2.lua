@@ -1,23 +1,23 @@
 local monitor = peripheral.find("monitor")
 local screenWidth, screenHeight = monitor.getSize()
 
+-- 定义按钮位置变量
+local buttonWidth = 6
+local buttonHeight = 3
+
+local centerX = math.floor(screenWidth / 2)
+local centerY = math.floor(screenHeight / 2)
+
+local changeButtonX = centerX - math.floor(buttonWidth / 2)
+local changeButtonY = centerY - buttonHeight - 1
+
+local exitButtonX = centerX - math.floor(buttonWidth / 2)
+local exitButtonY = centerY + 1
+
 -- 创建触摸屏界面
 function createInterface()
     -- 清空屏幕
     monitor.clear()
-
-    -- 计算按钮位置
-    local buttonWidth = 6
-    local buttonHeight = 3
-    
-    local centerX = math.floor(screenWidth / 2)
-    local centerY = math.floor(screenHeight / 2)
-    
-    local changeButtonX = centerX - math.floor(buttonWidth / 2)
-    local changeButtonY = centerY - buttonHeight - 1
-    
-    local exitButtonX = centerX - math.floor(buttonWidth / 2)
-    local exitButtonY = centerY + 1
 
     -- 绘制按钮
     monitor.setCursorPos(changeButtonX, changeButtonY)
