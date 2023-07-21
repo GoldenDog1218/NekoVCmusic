@@ -119,6 +119,9 @@ function MusicPlayer:playMusic(musicIndex)
 				modem.transmit(514, 114, "VCCAT")
 				local breakout = true
 				speaker.stop()
+				monitor2.setCursorPos(1, 1)
+				monitor2.clearLine()
+				monitor2.write("Nothing")
 				local player = MusicPlayer.new()
 				player:start()
 			elseif message == "ExitPlz" then
