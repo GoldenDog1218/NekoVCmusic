@@ -28,7 +28,7 @@ function send(go, back, message)
 	end
 end
 -- 计算按钮位置
-local buttonY = math.floor(screenHeight / 2 - buttonHeight / 2)
+local buttonY = math.floor(screenHeight / 2 - buttonHeight / 2 + 1.5)
 local changeButtonX = 1
 local exitButtonX = screenWidth - buttonWidth - 4
 monitor.setTextScale(1)
