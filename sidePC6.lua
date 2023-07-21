@@ -48,7 +48,8 @@ while true do
         monitor.clear()
         monitor.setCursorPos(1, 1)
 		monitor.write("Please stand by......")
-		send(114, 514, "ChangeMusic")
+		--send(114, 514, "ChangeMusic")
+		modem.transmit(114, 514, "ChangeMusic")
         monitor.write("Now you can change music!")
         sleep(2)
         -- 返回原始界面
@@ -63,7 +64,8 @@ while true do
         monitor.clear()
         monitor.setCursorPos(1, 1)
         monitor.write("Quiting.....")
-	send(114, 514, "ExitPlz")
+	modem.transmit(114, 514, "ExitPlz")
+	--send(114, 514, "ExitPlz")
         sleep(2)
 	monitor.clear()
         break  -- 退出程序
