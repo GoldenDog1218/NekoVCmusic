@@ -1,6 +1,8 @@
 local dfpwm = require("cc.audio.dfpwm")
 local speaker = peripheral.find("speaker")
-local monitor = peripheral.find("monitor")
+--local monitor = peripheral.find("monitor")
+local monitor = peripheral.wrap("left")
+local monitor2 = peripheral.wrap("top")
 local modem = peripheral.find("modem")
 local decoder = dfpwm.make_decoder()
 
@@ -27,6 +29,7 @@ function MusicPlayer:scanMusicFiles()
 end
 
 function MusicPlayer:printMusicList()
+    monitor.setTextScale(1)
     monitor.clear()
     monitor.setCursorPos(1, 1)
     monitor.write("Music List:")
