@@ -58,7 +58,6 @@ monitor.setCursorPos(changeButtonX, buttonY)
 monitor.write("[Change]")
 monitor.setCursorPos(exitButtonX, buttonY)
 monitor.write("[Exit]")
-send(114, 514,"offline")
 -- 监听触摸事件
 while true do
     local event, side, xPos, yPos = os.pullEvent("monitor_touch")
