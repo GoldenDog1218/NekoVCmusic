@@ -18,6 +18,29 @@ monitor2.write("Nothing")
 local MusicPlayer = {}
 MusicPlayer.__index = MusicPlayer
 
+function onlinecheck(go, back, message)
+	local expectedReply = "online" -- 期望的回复内容
+
+	while true do
+		print("sending: " .. message)
+		modem.transmit(go, back, message) -- 向指定频道发送消息
+
+		local event, modemSide, senderChannel, 
+			  replyChannel, message, senderDistance = os.pullEvent("modem_message")
+		-- 等待接收回复消息
+
+		if message == expectedReply then
+			print("get it: " .. message)
+			monitor.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
+			monitor2.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
+			break -- 收到期望的回复，跳出循环
+		else
+			print("not this one " .. message)
+			sleep(1) -- 等待一秒后继续发送消息
+		end
+	end
+end
+
 function MusicPlayer.new()
     local self = setmetatable({}, MusicPlayer)
     self.musicList = {}
@@ -145,6 +168,6 @@ function MusicPlayer:start()
     monitor.clear()
     speaker.stop()
 end
-
+send(114, 514,"offline")
 local player = MusicPlayer.new()
 player:start()
