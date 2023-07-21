@@ -118,7 +118,8 @@ function MusicPlayer:playMusic(musicIndex)
 		-- 接收到信号后，停止播放音乐并返回初始状态
 		local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 		if message == "ChangeMusic" then
-		    print("Received signal to change music")
+			modem.transmit(514, 114, "VCCAT")    
+			print("Received signal to change music")
 		    monitor2.setCursorPos(1, 1)
 		    monitor2.clearLine()
 		    monitor2.write("Nothing")
@@ -126,6 +127,7 @@ function MusicPlayer:playMusic(musicIndex)
 		    speaker.stop()
 		    break  -- 退出内部循环，回到外部循环
 		elseif message == "ExitPlz" then
+			modem.transmit(514, 114, "VCCAT")
 		    monitor.clear()
 		    monitor2.clear()
 		    speaker.stop()
