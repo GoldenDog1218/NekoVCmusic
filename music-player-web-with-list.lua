@@ -86,11 +86,14 @@ function music()
 	end
 	if musicName == "list" then
 		monitor.clear()
+		monitor.setTextScale(1)
 		for i, fileList in ipairs(fileList) do
-		  print(i .. "." .. fileList)
-		  monitor.write(i .. "." .. fileList)
-		  local xpos = i+1
-		  monitor.setCursorPos(xpos, 0)
+			print(i .. "." .. fileList)
+			local xpos = i+1
+			monitor.setCursorPos(xpos, 0)
+			monitor.setCursorPos(1, 0)
+			monitor.write("music list")
+			monitor.write(i .. "." .. fileList)
 		end
 		local musicList = getFilesWithExtension("./disk/", ".dfpwm")
 		local musiclistnum = musicList[musicname]
