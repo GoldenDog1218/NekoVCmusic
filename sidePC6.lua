@@ -6,27 +6,20 @@ local midpos = math.floor(screenWidth / 2)
 local modem = peripheral.find("modem")
 modem.open(114)
 modem.open(514)
-function onlinecheck(go, back, message)
-	local expectedReply = "online" -- 期望的回复内容
+while true do
+	modem.transmit(514, 114, "online") -- 向指定频道发送消息
 
-	while true do
-		print("sending: " .. message)
-		modem.transmit(go, back, message) -- 向指定频道发送消息
-
-		local event, modemSide, senderChannel, 
-			  replyChannel, message, senderDistance = os.pullEvent("modem_message")
+	local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 		-- 等待接收回复消息
 
-		if message == expectedReply then
-			print("get it: " .. message)
-			monitor.write("The main host is offline. Please start the Music Player program on the main host.")
-			break -- 收到期望的回复，跳出循环
-		else
-			print("not this one " .. message)
-			sleep(1) -- 等待一秒后继续发送消息
-		end
+	if message == online then
+		break -- 收到期望的回复，跳出循环
+	else
+		print("not this one " .. message)
+		sleep(1) -- 等待一秒后继续发送消息
 	end
 end
+
 function send(go, back, message)
 	local expectedReply = "VCCAT" -- 期望的回复内容
 
