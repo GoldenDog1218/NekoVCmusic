@@ -94,10 +94,10 @@ function MusicPlayer:playMusic(musicIndex)
                 os.pullEvent("speaker_audio_empty")
 				local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 				if message == "ChangeMusic" then
+					modem.transmit(514, 114, "VCCAT")
 					local breakout = true
-					modem.transmit(514, 114, "ok")
 				elseif message == "ExitPlz" then
-					modem.transmit(514, 114, "ok")
+					modem.transmit(514, 114, "VCCAT")
 					monitor.clear()
 					speaker.stop()
 					exit()
