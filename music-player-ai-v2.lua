@@ -10,7 +10,7 @@ monitor2.clearLine(2)
 monitor2.setCursorPos(1, 1)
 monitor2.write("Now Playing: ")
 monitor2.clearLine(2)
-monitor2.setCursorPos(2, 1)
+monitor2.setCursorPos(1, 2)
 monitor2.write("Nothing")
 local MusicPlayer = {}
 MusicPlayer.__index = MusicPlayer
@@ -74,7 +74,7 @@ function MusicPlayer:playMusic(musicIndex)
         monitor2.clearLine(2)
         monitor2.setCursorPos(1, 1)
         monitor2.write("Now Playing: ")
-        monitor2.setCursorPos(2, 1)
+        monitor2.setCursorPos(1, 2)
         monitor2.write(musicName)
         -- 添加向另一台计算机发送当前歌曲名的代码
         --modem.open(123)
@@ -88,7 +88,7 @@ function MusicPlayer:playMusic(musicIndex)
             end
         end
         monitor2.clearLine(2)
-        monitor2.setCursorPos(2, 1)
+        monitor2.setCursorPos(1, 2)
         monitor2.write("Nothing")
     else
         print("Invalid music index")
