@@ -99,6 +99,7 @@ function MusicPlayer:playMusic(musicIndex)
 				elseif message == "ExitPlz" then
 					modem.transmit(514, 114, "VCCAT")
 					monitor.clear()
+					monitor2.clear()
 					speaker.stop()
 					exit()
 				end
