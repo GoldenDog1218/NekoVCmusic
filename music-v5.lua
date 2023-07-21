@@ -24,15 +24,14 @@ function onlinecheck(go, back, message)
 	while true do
 		print("sending: " .. message)
 		modem.transmit(go, back, message) -- 向指定频道发送消息
-
+		monitor.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
+		monitor2.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
 		local event, modemSide, senderChannel, 
 			  replyChannel, message, senderDistance = os.pullEvent("modem_message")
 		-- 等待接收回复消息
 
 		if message == expectedReply then
 			print("get it: " .. message)
-			monitor.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
-			monitor2.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
 			break -- 收到期望的回复，跳出循环
 		else
 			print("not this one " .. message)
