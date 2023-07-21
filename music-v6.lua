@@ -108,7 +108,7 @@ function MusicPlayer:playMusic(musicIndex)
         --modem.transmit(123, 456, musicName)  -- 修改频道和目标ID
 
         for chunk in io.lines(filePath, 16 * 1024) do
-	        if breakout then
+	        if breakout == "exit" then
 			break
 		end
 		local buffer = decoder(chunk)
@@ -117,13 +117,12 @@ function MusicPlayer:playMusic(musicIndex)
 			local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 			if message == "ChangeMusic" then
 				modem.transmit(514, 114, "VCCAT")
-				local breakout = true
+				local breakout = "exit"
 				speaker.stop()
 				monitor2.setCursorPos(1, 1)
 				monitor2.clearLine()
 				monitor2.write("Nothing")
-				local player = MusicPlayer.new()
-				player:start()
+				break
 			elseif message == "ExitPlz" then
 				modem.transmit(514, 114, "VCCAT")
 				monitor.clear()
