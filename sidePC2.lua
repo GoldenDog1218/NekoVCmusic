@@ -1,7 +1,7 @@
 local buttonWidth = 8
 local buttonHeight = 3
 local screenWidth, screenHeight = term.getSize()
-local monitor = peripheral.find("monitor")
+local monitor = peripheral.wrap("top")
 
 -- 计算按钮位置
 local buttonY = math.floor(screenHeight / 2 - buttonHeight / 2)
