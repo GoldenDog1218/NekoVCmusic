@@ -62,9 +62,8 @@ function MusicPlayer:playMusic(musicIndex)
             end
         end
 
-        monitor.clearLine(5)
-        monitor.setCursorPos(1, 5)
-        monitor.write("Now Playing: " .. musicName)
+        -- 添加向另一台计算机发送当前歌曲名的代码
+        modem.transmit(123, 456, musicName)  -- 修改频道和目标ID
 
         for chunk in io.lines(filePath, 16 * 1024) do
             local buffer = decoder(chunk)
@@ -82,30 +81,27 @@ function MusicPlayer:start()
         self:scanMusicFiles()
         self:printMusicList()
 
-        monitor.setCursorPos(1, #self.musicList + 2)
-        monitor.write("Enter music index to play or 'exit' to quit:")
-
-        local _, touchX, touchY = os.pullEvent("monitor_touch")
-        if touchY > 1 and touchY <= (#self.musicList + 1) then
-            self:playMusic(touchY - 1)
-            monitor.clear()
-            monitor.setCursorPos(1, 1)
-            monitor.write("Press any key to stop the music or 'list' to see the music list:")
-            print("(input 'exit' to quit)")
-            local input = io.read()
-            if input == "list" then
-                -- Continue to next iteration of the loop to show the music list again
-            else
-                break
-            end
-        elseif touchY == (#self.musicList + 2) then
-            local input = "exit"
+        print("Enter music index to play or 'exit' to quit:")
+        local input = io.read()
+        if input == "exit" then
             break
+        elseif input == "list" then
+            -- Continue to next iteration of the loop to show the music list again
         else
-            monitor.clear()
-            monitor.setCursorPos(1, 1)
-            monitor.write("Invalid input")
-            os.sleep(2)
+            local musicIndex = tonumber(input)
+            if musicIndex then
+                self:playMusic(musicIndex)
+                print("Press any key to stop the music or 'list' to see the music list:")
+                print("(input 'exit' to quit)")
+                input = io.read()
+                if input == "list" then
+                    -- Continue to next iteration of the loop to show the music list again
+                else
+                    break
+                end
+            else
+                print("Invalid input")
+            end
         end
     end
 
