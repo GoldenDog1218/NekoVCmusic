@@ -1,18 +1,48 @@
 local monitor = peripheral.find("monitor")
-local modem = peripheral.find("modem")
+local screenWidth, screenHeight = monitor.getSize()
 
-modem.open(456)  -- 修改为与发送方相同的频道
-
-local function displaySongName(songName)
+-- 创建触摸屏界面
+function createInterface()
+    -- 清空屏幕
     monitor.clear()
+
+    -- 绘制按钮
     monitor.setCursorPos(1, 1)
-    monitor.write("Now Playing:")
+    monitor.write("change")
+
     monitor.setCursorPos(1, 2)
-    monitor.write(songName)
+    monitor.write("exit")
 end
 
-while true do
-    local event, side, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
-    displaySongName(message)
-    -- 执行你想要的操作，比如保存歌曲名到一个文件中
+-- 监听触摸事件
+function listenTouchEvents()
+    while true do
+        local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+        if xPos >= 1 and xPos <= 2 then
+            if yPos == 1 then
+                -- 执行 change 按钮的操作
+                changeButtonAction()
+            elseif yPos == 2 then
+                -- 执行 exit 按钮的操作
+                exitButtonAction()
+            end
+        end
+    end
 end
+
+-- change 按钮的操作
+function changeButtonAction()
+    -- 在这里编写 change 按钮的操作代码
+    print("Change按钮被点击了！")
+end
+
+-- exit 按钮的操作
+function exitButtonAction()
+    -- 在这里编写 exit 按钮的操作代码
+    print("Exit按钮被点击了！")
+    return
+end
+
+-- 主程序
+createInterface()
+listenTouchEvents()
