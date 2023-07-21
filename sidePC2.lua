@@ -46,13 +46,13 @@ end
 -- change 按钮的操作
 function changeButtonAction()
     -- 在这里编写 change 按钮的操作代码
-    print("Change!")
+    print("Change按钮被点击了！")
 end
 
 -- exit 按钮的操作
 function exitButtonAction()
     -- 在这里编写 exit 按钮的操作代码
-    print("Exit!")
+    print("Exit按钮被点击了！")
     return
 end
 
