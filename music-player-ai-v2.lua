@@ -1,7 +1,7 @@
 local dfpwm = require("cc.audio.dfpwm")
 local speaker = peripheral.find("speaker")
 local monitor = peripheral.find("monitor")
-
+local modem = peripheral.find("modem")
 local decoder = dfpwm.make_decoder()
 
 local MusicPlayer = {}
@@ -63,6 +63,8 @@ function MusicPlayer:playMusic(musicIndex)
         end
 
         -- 添加向另一台计算机发送当前歌曲名的代码
+        modem.open(123)
+        modem.open(456)
         modem.transmit(123, 456, musicName)  -- 修改频道和目标ID
 
         for chunk in io.lines(filePath, 16 * 1024) do
