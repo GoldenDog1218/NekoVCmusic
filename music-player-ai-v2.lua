@@ -1,6 +1,7 @@
 local dfpwm = require("cc.audio.dfpwm")
 local speaker = peripheral.find("speaker")
-local monitor = peripheral.find("monitor")
+local monitor1 = peripheral.find("monitor")
+local monitor2 = peripheral.find("monitor2")
 
 local decoder = dfpwm.make_decoder()
 
@@ -10,64 +11,74 @@ MusicPlayer.__index = MusicPlayer
 function MusicPlayer.new()
     local self = setmetatable({}, MusicPlayer)
     self.musicList = {}
-    self.diskDriveList = {"bottom", "top", "back"} -- 改为你的磁盘驱动器列表
     return self
 end
 
 function MusicPlayer:scanMusicFiles()
     self.musicList = {}
-    for _, drive in ipairs(self.diskDriveList) do
-        if peripheral.isPresent(drive) and peripheral.getType(drive) == "drive" then
-            local files = fs.list(drive.."/disk/")
-            for _, file in ipairs(files) do
-                if not fs.isDir(drive.."/disk/"..file) then
-                    local fileName = fs.getName(file)
-                    if string.sub(fileName, -6) == ".dfpwm" then
-                        table.insert(self.musicList, drive.."/disk/"..fileName)
-                    end
-                end
+    local files = fs.list("./disk/")
+    for _, file in ipairs(files) do
+        if not fs.isDir(file) then
+            local fileName = fs.getName(file)
+            if string.sub(fileName, -6) == ".dfpwm" then
+                table.insert(self.musicList, fileName)
             end
         end
     end
 end
 
 function MusicPlayer:printMusicList()
-    monitor.setTextScale(1)
-    monitor.clear()
-    
-    local width, height = monitor.getSize()
-    
-    -- 列表标题
-    monitor.setCursorPos(1, 1)
-    monitor.write("Music List:")
-    
-    -- 显示音乐列表
-    for i, musicPath in ipairs(self.musicList) do
-        if i <= height - 1 then  -- 减去标题占据的行数
-            monitor.setCursorPos(1, i + 1)
-            local musicName = fs.getName(musicPath)
-            monitor.write(i .. ". " .. musicName)
-        else
-            break  -- 超过显示屏高度时停止显示
-        end
+    monitor1.clear()
+    monitor1.setCursorPos(1, 1)
+    monitor1.write("Music List:")
+    for i, musicName in ipairs(self.musicList) do
+        monitor1.setCursorPos(1, i + 1)
+        monitor1.write(i .. ". " .. musicName)
+    end
+end
+
+function MusicPlayer:printPlayState(state)
+    monitor2.clear()
+    monitor2.setCursorPos(1, 1)
+    monitor2.write("Now Playing: ")
+    if state then
+        monitor2.setCursorPos(1, 2)
+        monitor2.write("Playing")
+    else
+        monitor2.setCursorPos(1, 2)
+        monitor2.write("Paused")
     end
 end
 
 function MusicPlayer:downloadFile(url, path)
-    -- 略去下载文件的代码，与原始代码相同
+    local response = http.get(url)
+    if response and response.getResponseCode() == 200 then
+        local file = fs.open(path, "w")
+        file.write(response.readAll())
+        file.close()
+        return true
+    else
+        return false
+    end
 end
 
 function MusicPlayer:playMusic(musicIndex)
-    local musicPath = self.musicList[musicIndex]
-    if musicPath then
-        local fileName = fs.getName(musicPath)
+    local musicName = self.musicList[musicIndex]
+    if musicName then
+        local filePath = "./disk/" .. musicName
+        if not fs.exists(filePath) then
+            local url = "https://raw.githubusercontent.com/GoldenDog1218/NekoVCmusic/main/" .. musicName
+            if self:downloadFile(url, filePath) then
+                print("Downloaded: " .. musicName)
+            else
+                print("Failed to download: " .. musicName)
+                return
+            end
+        end
 
-        monitor.clearLine(5)
-        monitor.setCursorPos(1, 5)
-        monitor.write("Now Playing: " .. fileName)
+        self:printPlayState(true)
 
-        local drive = string.match(musicPath, "(%a+)/disk/")
-        for chunk in io.lines(drive.."/disk/"..fileName, 16 * 1024) do
+        for chunk in io.lines(filePath, 16 * 1024) do
             local buffer = decoder(chunk)
             while not speaker.playAudio(buffer) do
                 os.pullEvent("speaker_audio_empty")
@@ -93,6 +104,7 @@ function MusicPlayer:start()
             local musicIndex = tonumber(input)
             if musicIndex then
                 self:playMusic(musicIndex)
+                self:printPlayState(false)
                 print("Press any key to stop the music or 'list' to see the music list:")
                 print("(input 'exit' to quit)")
                 input = io.read()
@@ -107,7 +119,8 @@ function MusicPlayer:start()
         end
     end
 
-    monitor.clear()
+    monitor1.clear()
+    monitor2.clear()
     speaker.stop()
 end
 
