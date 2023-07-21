@@ -7,8 +7,7 @@ local modem = peripheral.find("modem")
 modem.open(114)
 modem.open(514)
 function send(go, back, message)
-	local expectedReply = "ok" -- 期望的回复内容
-	local message = "change" -- 要发送的消息
+	local expectedReply = "VCCAT" -- 期望的回复内容
 
 	while true do
 		print("sending: " .. message)
@@ -64,8 +63,9 @@ while true do
         monitor.clear()
         monitor.setCursorPos(1, 1)
         monitor.write("Quiting.....")
-		send(114, 514, "ExitPlz")
+	send(114, 514, "ExitPlz")
         sleep(2)
+	monitor.clear()
         break  -- 退出程序
     end
 end
