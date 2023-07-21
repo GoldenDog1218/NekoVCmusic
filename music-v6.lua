@@ -24,6 +24,8 @@ function onlinecheck(go, back, message)
 	while true do
 		print("sending: " .. message)
 		modem.transmit(go, back, message) -- 向指定频道发送消息
+		monitor.setCursorPos(1, 1)
+		monitor2.setCursorPos(1, 1)
 		monitor.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
 		monitor2.write("The auxiliary host is offline. Please start the SidePC program on the auxiliary host.")
 		local event, modemSide, senderChannel, 
@@ -31,10 +33,8 @@ function onlinecheck(go, back, message)
 		-- 等待接收回复消息
 
 		if message == expectedReply then
-			print("get it: " .. message)
-			break -- 收到期望的回复，跳出循环
+			break 
 		else
-			print("not this one " .. message)
 			sleep(1) -- 等待一秒后继续发送消息
 		end
 	end
@@ -167,6 +167,6 @@ function MusicPlayer:start()
     monitor.clear()
     speaker.stop()
 end
-send(114, 514,"online")
+onlinecheck(114, 514,"online")
 local player = MusicPlayer.new()
 player:start()
