@@ -84,7 +84,7 @@ function MusicPlayer:start()
 
         monitor.setCursorPos(1, #self.musicList + 2)
         monitor.write("Enter music index to play or 'exit' to quit:")
-        
+
         local _, touchX, touchY = os.pullEvent("monitor_touch")
         if touchY > 1 and touchY <= (#self.musicList + 1) then
             self:playMusic(touchY - 1)
