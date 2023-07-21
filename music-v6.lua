@@ -167,6 +167,6 @@ function MusicPlayer:start()
     monitor.clear()
     speaker.stop()
 end
-send(114, 514,"offline")
+send(114, 514,"online")
 local player = MusicPlayer.new()
 player:start()
